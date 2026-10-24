@@ -46,4 +46,4 @@ agents/<project-slug>/
 
 | Agent Directory | Description | Framework / Stack | Contributor |
 | :--- | :--- | :--- | :--- |
-| [`rentrakshak`](rentrakshak/) | Bengaluru rental safety agent, anonymous tenant community, vacating board (Google ADK) | Google ADK, Gemini, Streamlit, SQLite | Community |
+| [`rentrakshak`](rentrakshak/) | **RentRakshak** — Bengaluru rental safety & anonymous tenant community. Google **ADK** agent with **13 function tools**: evidence-based scam/red-flag analysis (listing + chat), transparent rent comparables (no hallucinated market rent), deposit assessment without fake legal caps, Karnataka checklist with sourced references, moderated anonymous reviews, vacating-room board with private contact & status workflow, prompt-injection/PII guardrails, optional Model Armor hook, Streamlit UI, offline **pytest** suite. Runs without API key for deterministic demo (`main.py`). Tagline: *Rent smarter. Stay safer. Help the next tenant.* | Google ADK, Gemini, Gemma (optional), Streamlit, SQLite, Pydantic | Community |

@@ -2,6 +2,8 @@
 
 This guide helps you run the hackathon demo without last-minute surprises.
 
+**Judges:** start with **[JUDGING_OVERVIEW.md](JUDGING_OVERVIEW.md)** and the long-form **[README.md](README.md)** (full feature descriptions). This file is the command cheat sheet.
+
 ## 1. One-time setup
 
 ```bash
