@@ -1,4 +1,4 @@
-"""RentRakshak Streamlit demo UI."""
+"""RentRakshak - Professional Bengaluru Rental Safety Dashboard."""
 
 from __future__ import annotations
 
@@ -9,6 +9,7 @@ from pathlib import Path
 
 import streamlit as st
 
+# Setup paths
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / "tests" / "fixtures"
 if str(ROOT) not in sys.path:
@@ -21,321 +22,334 @@ from rentrakshak.services.community import create_anonymous_experience, search_a
 from rentrakshak.services.safety_report import generate_rental_safety_report
 from rentrakshak.services.vacating import create_vacating_post, search_available_rooms
 
-RISK_STYLE = {
-    RiskCategory.LOW.value: ("🟢", "#0d7a4a", "Low concern"),
-    RiskCategory.NEEDS_VERIFICATION.value: ("🟡", "#b8860b", "Needs verification"),
-    RiskCategory.HIGH.value: ("🟠", "#c45c00", "High concern"),
-    RiskCategory.CRITICAL.value: ("🔴", "#b00020", "Critical warning"),
-}
+# Initialize
+init_db()
 
 st.set_page_config(
     page_title="RentRakshak",
-    page_icon="🏠",
+    page_icon="🛡️",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
 
+# --- THEME & CSS ---
 st.markdown(
     """
     <style>
-    .main-header { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.2rem; }
-    .tagline { color: #555; font-size: 1.05rem; margin-bottom: 1rem; }
-    .risk-box {
-        padding: 1rem 1.2rem; border-radius: 8px; margin: 1rem 0;
-        border-left: 6px solid #333;
+    /* Force Light Mode & Professional Font */
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+    :root {
+        --primary: #5E17EB;
+        --primary-soft: #F5F1FF;
+        --text-main: #1A1A1A;
+        --text-muted: #64748B;
+        --bg-app: #FDFDFD;
+        --card-border: #F1F5F9;
     }
-    .step-card {
-        background: #f8f9fa; padding: 0.9rem 1rem; border-radius: 8px;
-        margin-bottom: 0.5rem; border: 1px solid #e0e0e0;
+
+    html, body, [data-testid="stAppViewContainer"] {
+        background-color: var(--bg-app) !important;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+    }
+
+    /* Hide Streamlit Boilerplate */
+    header, footer, [data-testid="stSidebarNav"], .stDeployButton {
+        display: none !important;
+    }
+
+    /* Professional Sidebar */
+    [data-testid="stSidebar"] {
+        background-color: white !important;
+        border-right: 1px solid var(--card-border) !important;
+        min-width: 280px !important;
+    }
+
+    .nav-item {
+        padding: 12px 16px;
+        margin: 4px 16px;
+        border-radius: 12px;
+        color: var(--text-muted);
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .nav-item-active {
+        background-color: var(--primary-soft);
+        color: var(--primary);
+    }
+
+    /* Hero Section */
+    .hero-box {
+        background: linear-gradient(105deg, #F9F7FF 0%, #FFFFFF 100%);
+        border: 1px solid #E9E1FF;
+        border-radius: 32px;
+        padding: 48px;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 32px;
+    }
+
+    .hero-badge {
+        background: white;
+        padding: 6px 14px;
+        border-radius: 100px;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--primary);
+        box-shadow: 0 2px 10px rgba(94, 23, 235, 0.08);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 20px;
+    }
+
+    /* Feature Grid */
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-bottom: 40px;
+    }
+
+    .f-card {
+        background: white;
+        padding: 20px;
+        border-radius: 20px;
+        border: 1px solid var(--card-border);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+        transition: transform 0.2s;
+    }
+
+    .f-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--primary);
+    }
+
+    /* Main Dashboard container */
+    .dashboard-shell {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 40px;
+    }
+
+    /* Professional Input Boxes */
+    div[data-testid="stTextArea"] textarea {
+        border: 1px solid #E2E8F0 !important;
+        border-radius: 16px !important;
+        background-color: #FAFAFA !important;
+        padding: 16px !important;
+    }
+
+    /* Custom Purple Button */
+    .stButton > button {
+        background-color: var(--primary) !important;
+        color: white !important;
+        border-radius: 14px !important;
+        padding: 12px 24px !important;
+        font-weight: 600 !important;
+        border: none !important;
+        box-shadow: 0 4px 12px rgba(94, 23, 235, 0.2) !important;
+    }
+
+    .stButton > button:hover {
+        background-color: #4C11D0 !important;
+        transform: translateY(-1px);
     }
     </style>
     """,
-    unsafe_allow_html=True,
+    unsafe_allow_html=True
 )
 
-init_db()
+# --- STATE MANAGEMENT ---
+if "page" not in st.session_state:
+    st.session_state.page = "Home"
 
-# ——— Sidebar: how to use (always visible) ———
+# --- SIDEBAR NAVIGATION ---
 with st.sidebar:
-    st.markdown("### How to use")
+    st.markdown("<br>", unsafe_allow_html=True)
+    # Brand
     st.markdown(
         """
-        1. **Setup once** (terminal):
-        ```
-        cd agents/rentrakshak
-        source .venv/bin/activate
-        pip install -e .
-        python scripts/seed_demo_data.py
-        streamlit run ui/streamlit_app.py
-        ```
-        2. Pick a page below ⬇️  
-        3. **Check listing** → load sample scam text → **Run check**  
-        4. **Community** → search `Koramangala` or `Whitefield`  
-        5. No API key needed for this UI.
-        """
+        <div style="padding: 0 24px; margin-bottom: 40px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="background: #5E17EB; width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px;">🛡️</div>
+                <div>
+                    <h2 style="margin:0; font-size: 20px; font-weight: 800; color: #1A1A1A;">RentRakshak</h2>
+                    <p style="margin:0; font-size: 12px; color: #64748B; font-weight: 500;">Namma Bengaluru. Safe Rentals.</p>
+                </div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
     )
-    st.divider()
-    page = st.radio(
-        "Go to",
-        [
-            "Start here",
-            "Check a listing",
-            "Tenant stories",
-            "Rooms vacating soon",
-            "Before you sign",
-            "Privacy & tech",
-        ],
-        label_visibility="collapsed",
-    )
-    st.divider()
-    if st.button("Load demo database", use_container_width=True):
-        import subprocess
 
-        subprocess.run([sys.executable, str(ROOT / "scripts" / "seed_demo_data.py")], check=False)
-        st.success("Demo data refreshed. Search Koramangala / Whitefield.")
+    # Nav
+    if st.button("🏠 Home", use_container_width=True): st.session_state.page = "Home"
+    if st.button("✨ Analyze Listing", use_container_width=True): st.session_state.page = "Analyze"
+    if st.button("👥 Community", use_container_width=True): st.session_state.page = "Community"
+    if st.button("📊 Rent Estimates", use_container_width=True): st.session_state.page = "Estimates"
+    if st.button("📋 Checklist", use_container_width=True): st.session_state.page = "Checklist"
 
-# ——— Header ———
-st.markdown('<p class="main-header">RentRakshak</p>', unsafe_allow_html=True)
-st.markdown(
-    '<p class="tagline">Rent smarter. Stay safer. Help the next tenant.</p>',
-    unsafe_allow_html=True,
-)
-
-if page == "Start here":
-    st.markdown("#### Before you pay a deposit, check the risks.")
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        st.markdown('<div class="step-card"><b>1. Check listing</b><br>Paste portal text + WhatsApp chat. Get red flags with evidence.</div>', unsafe_allow_html=True)
-    with c2:
-        st.markdown('<div class="step-card"><b>2. Read tenant stories</b><br>Anonymous experiences by locality (demo: Koramangala).</div>', unsafe_allow_html=True)
-    with c3:
-        st.markdown('<div class="step-card"><b>3. Find vacating rooms</b><br>Tenant-posted availability (demo: Whitefield).</div>', unsafe_allow_html=True)
-
-    st.info("**No Gemini key required** — listing check uses rule-based tools in Python, not a live chat model.")
-    st.markdown("**Try in 30 seconds:** sidebar → **Check a listing** → **Load suspicious sample** → **Run check**.")
-
-    with st.expander("Command-line alternative (same engine)"):
-        st.code(
-            f"cd {ROOT}\npython main.py --listing @tests/fixtures/suspicious_listing.txt",
-            language="bash",
-        )
-
-elif page == "Check a listing":
-    st.markdown("Paste a **99acres / MagicBricks / WhatsApp** message. Add broker chat if you have it.")
-
-    col_a, col_b = st.columns(2)
-    with col_a:
-        if st.button("Load suspicious sample", use_container_width=True):
-            st.session_state["listing_text"] = (FIXTURES / "suspicious_listing.txt").read_text()
-    with col_b:
-        if st.button("Load normal sample", use_container_width=True):
-            st.session_state["listing_text"] = (FIXTURES / "clean_listing.txt").read_text()
-
-    listing = st.text_area(
-        "Listing",
-        height=180,
-        value=st.session_state.get("listing_text", ""),
-        placeholder="2 BHK Koramangala, rent 15000, deposit...",
-        key="listing_area",
-    )
-    chat = st.text_area("Landlord / broker chat (optional)", height=100, placeholder="Pay token today, send OTP...")
-    locality = st.text_input("Locality hint if not in text", placeholder="e.g. HSR Layout")
-
-    if st.button("Run check", type="primary", use_container_width=True):
-        if not listing.strip():
-            st.error("Paste something in the listing box first.")
-        else:
-            report = generate_rental_safety_report(
-                listing, chat or None, locality_hint=locality or None
-            )
-            icon, color, label = RISK_STYLE.get(
-                report.risk_category.value,
-                ("⚪", "#333", report.risk_category.value),
-            )
-            st.markdown(
-                f'<div class="risk-box" style="border-left-color:{color};">'
-                f"<h3>{icon} {label}</h3>"
-                f"<p>{report.risk_reasoning}</p></div>",
-                unsafe_allow_html=True,
-            )
-
-            m1, m2, m3 = st.columns(3)
-            m1.metric("Red flags found", len(report.findings))
-            m2.metric("Locality", report.property.locality or "—")
-            m3.metric(
-                "Rent in text",
-                f"₹{report.property.monthly_rent_inr}" if report.property.monthly_rent_inr else "—",
-            )
-
-            if report.findings:
-                st.markdown("#### What we found (with evidence from your text)")
-                for f in report.findings:
-                    with st.container(border=True):
-                        st.markdown(f"**{f.rule_id}** · {f.severity.value.upper()}")
-                        st.write(f.explanation)
-                        st.caption(f'Evidence: "{f.evidence_excerpt[:280]}…"' if len(f.evidence_excerpt) > 280 else f'Evidence: "{f.evidence_excerpt}"')
-                        st.markdown(f"*Next step:* {f.recommended_next_step}")
-
-            if report.rent_estimate:
-                re = report.rent_estimate
-                st.markdown("#### Rent benchmark (demo dataset only)")
-                if re.sufficient_data:
-                    st.success(
-                        f"₹{re.rent_min_inr:,} – ₹{re.rent_max_inr:,} / month "
-                        f"(median ₹{re.rent_median_inr:,}, {re.comparable_count} comparables)"
-                    )
-                else:
-                    st.warning("Not enough comparables in our dataset — we will **not** guess a market rent.")
-                for lim in re.limitations:
-                    st.caption(lim)
-
-            if report.questions_to_ask:
-                st.markdown("#### Ask before you pay")
-                for q in report.questions_to_ask[:6]:
-                    st.markdown(f"- {q}")
-
-            if report.guardrail_notes:
-                st.markdown("#### Safety note")
-                for n in report.guardrail_notes:
-                    st.warning(n)
-
-            with st.expander("Technical JSON (for judges/devs)"):
-                st.json(json.loads(json.dumps(report.model_dump(), default=str)))
-
-elif page == "Tenant stories":
-    st.markdown("Anonymous posts — **not verified facts**. Search after running `seed_demo_data.py`.")
-
-    loc_f = st.text_input("Locality", value="Koramangala")
-    cat_f = st.text_input("Category (optional)", value="")
-    sent_f = st.selectbox("Sentiment", ["", "positive", "neutral", "negative"])
-
-    if st.button("Search", type="primary") or loc_f:
-        res = search_anonymous_experiences(
-            locality=loc_f or None,
-            category=cat_f or None,
-            sentiment=sent_f or None,
-        )
-        st.caption(" · ".join(res["limitations"]))
-        if not res["items"]:
-            st.warning("No posts. Click **Load demo database** in the sidebar, then search Koramangala.")
-        for item in res["items"]:
-            with st.container(border=True):
-                st.markdown(f"**{item['locality']}** · {item['category']} · _{item['sentiment']}_")
-                st.write(item["experience_text"])
-
-    st.divider()
-    st.markdown("#### Share your experience (no name, no phone in text)")
-    with st.form("exp_form", border=True):
-        eloc = st.text_input("Locality", "HSR Layout")
-        eptype = st.text_input("Property type", "apartment")
-        ecat = st.selectbox(
-            "Category",
-            [
-                "Deposit and refund",
-                "Maintenance",
-                "Communication",
-                "Agreement clarity",
-                "Move-out experience",
-                "General rental experience",
-            ],
-        )
-        esent = st.selectbox("Sentiment", ["positive", "neutral", "negative"])
-        etext = st.text_area("Story (min 20 characters)", height=100)
-        if st.form_submit_button("Submit anonymously"):
-            try:
-                data = AnonymousExperienceInput(
-                    locality=eloc,
-                    property_type=eptype,
-                    category=ecat,
-                    sentiment=esent,
-                    experience_text=etext,
-                )
-                out = create_anonymous_experience(data)
-                if out["success"]:
-                    st.success(f"Published status: **{out['moderation_status']}**")
-                    st.warning("Save this **edit token** privately (not shown in search):")
-                    st.code(out["edit_token"])
-                else:
-                    st.error(out.get("message", "Rejected"))
-            except Exception as exc:
-                st.error(str(exc))
-
-elif page == "Rooms vacating soon":
-    st.markdown("Tenant-shared leads — contact is **not** shown publicly in this MVP.")
-
-    vloc = st.text_input("Search locality", value="Whitefield")
-    rooms = search_available_rooms(locality=vloc or None)
-    if not rooms["items"]:
-        st.warning("No active rooms. Sidebar → **Load demo database**, then search **Whitefield**.")
-    for r in rooms["items"]:
-        with st.container(border=True):
-            st.markdown(f"**{r['locality']}** · {r['room_type']} · **₹{r['monthly_rent_inr']:,}/mo**")
-            st.write(r["description"])
-            st.caption(f"From {r['availability_date']} · {r['post_kind'].replace('_', ' ')}")
-
-    st.divider()
-    st.markdown("#### I'm vacating — post availability")
-    with st.form("vac_form", border=True):
-        vloc2 = st.text_input("Locality", "HSR Layout")
-        vrent = st.number_input("Monthly rent (₹)", min_value=1000, value=18000, step=500)
-        vdate = st.date_input("Available from", date.today() + timedelta(days=14))
-        vdesc = st.text_area("Description (no phone/email here)", height=80)
-        vkind = st.selectbox(
-            "Type",
-            [
-                ("room_takeover", "Room takeover"),
-                ("roommate_replacement", "Roommate replacement"),
-                ("availability_lead", "General availability"),
-            ],
-            format_func=lambda x: x[1],
-        )
-        vack = st.checkbox("I will check my rental agreement / owner permission")
-        if st.form_submit_button("Publish listing"):
-            if len(vdesc.strip()) < 15:
-                st.error("Description too short.")
-            else:
-                out = create_vacating_post(
-                    VacatingPostInput(
-                        locality=vloc2,
-                        property_type="apartment",
-                        room_type="private room",
-                        monthly_rent_inr=int(vrent),
-                        availability_date=vdate,
-                        post_kind=vkind[0],
-                        description=vdesc,
-                        contact_method="poster-shares-after-match",
-                        owner_permission_ack=vack,
-                    ),
-                    publish=True,
-                )
-                if out["success"]:
-                    st.success(f"Live status: **{out['status']}**")
-                    st.code(out["edit_token"])
-                else:
-                    st.error(out.get("message", "Failed"))
-
-elif page == "Before you sign":
-    st.markdown("Checklist — not legal advice. Confirm with authorities or a lawyer.")
-    for item in build_rental_checklist():
-        with st.expander(item.title):
-            st.write(item.description)
-            st.caption(f"Type: {item.category}")
-            if item.source_url:
-                st.markdown(f"[Source]({item.source_url})")
-    st.subheader("Reference links")
-    for ref in get_karnataka_rental_guidance():
-        st.markdown(f"- [{ref.title}]({ref.url}) — checked {ref.date_checked}")
-
-else:
     st.markdown(
         """
-        **What this is:** Hackathon demo for Bengaluru renters — ADK agent + tools in the repo.
+        <div style="position: absolute; bottom: 40px; left: 24px; right: 24px;">
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 20px; border-radius: 20px;">
+                <p style="margin:0; font-weight: 700; color: #1A1A1A; font-size: 14px;">ನಮ್ಮ ಬೆಂಗಳೂರು</p>
+                <p style="margin:0; font-size: 12px; color: #64748B; margin-top: 4px;">Better Rentals for a Better City</p>
+                <div style="height: 60px; background: #EEE; border-radius: 12px; margin-top: 12px; display: flex; align-items: center; justify-content: center; font-size: 30px; opacity: 0.5;">🏛️🚇</div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-        **What this is NOT:** Verified listings, legal advice, or Google/Karnataka government product.
+# --- MAIN CONTENT ---
+main_c, right_c = st.columns([3, 1.1], gap="large")
 
-        **Privacy:** Community posts don't ask your real name. Don't paste phone/email in stories.
-
-        **AI chat (optional):** Set `GOOGLE_API_KEY` and run `adk web adk_agent` from `agents/rentrakshak` for conversational mode.
-        This Streamlit app uses the **same risk engine** without calling Gemini.
+with main_c:
+    # Header row
+    st.markdown(
         """
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
+            <div style="position: relative; width: 500px;">
+                <input type="text" placeholder="Search localities or ask RentRakshak..." style="width:100%; padding: 14px 20px; border-radius: 16px; border: 1px solid #E2E8F0; background: white; font-size: 14px;">
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <div style="background:white; border: 1px solid #E2E8F0; padding: 10px 18px; border-radius: 14px; font-size: 14px; font-weight: 600;">📍 Bengaluru</div>
+                <div style="background:white; border: 1px solid #E2E8F0; padding: 10px; border-radius: 14px; width: 44px; display: flex; align-items: center; justify-content: center;">🔔</div>
+                <div style="background:#5E17EB; color: white; border-radius: 14px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; font-weight: 800;">O</div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    if st.session_state.page == "Home" or st.session_state.page == "Analyze":
+        # Hero
+        st.markdown(
+            """
+            <div class="hero-box">
+                <div class="hero-badge">🛡️ Your Rental Safety Companion for Bengaluru</div>
+                <h1 style="font-size: 44px; font-weight: 800; color: #1A1A1A; margin-bottom: 16px; line-height: 1.1;">
+                    Before you pay that deposit,<br>talk to <span style="color: #5E17EB;">RentRakshak.</span>
+                </h1>
+                <p style="font-size: 18px; color: #64748B; margin-bottom: 32px; max-width: 600px;">
+                    Check rental red flags, understand local rents, and learn from Bengaluru's tenant community.
+                </p>
+                <div style="display: flex; gap: 16px;">
+                    <div style="background: #5E17EB; color: white; padding: 14px 28px; border-radius: 14px; font-weight: 700; cursor: pointer;">Analyze a Listing →</div>
+                    <div style="background: white; border: 1px solid #E2E8F0; color: #1A1A1A; padding: 14px 28px; border-radius: 14px; font-weight: 700; cursor: pointer;">Explore Community</div>
+                </div>
+                <!-- Visual Decoration (Abstract Metro Train) -->
+                <div style="position: absolute; right: -40px; bottom: 0; width: 340px; height: 160px; background: #5E17EB; border-radius: 40px 0 0 40px; opacity: 0.1;"></div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        # Feature Grid
+        st.markdown(
+            """
+            <div class="feature-grid">
+                <div class="f-card"><p style="font-size: 20px; margin:0 0 8px 0;">🔍</p><p style="font-weight:700; font-size:14px; margin:0;">Analyze Listings</p><p style="font-size:11px; color:#64748B; margin:0;">Detect red flags</p></div>
+                <div class="f-card"><p style="font-size: 20px; margin:0 0 8px 0;">📈</p><p style="font-weight:700; font-size:14px; margin:0;">Rent Estimates</p><p style="font-size:11px; color:#64748B; margin:0;">Fair benchmarks</p></div>
+                <div class="f-card"><p style="font-size: 20px; margin:0 0 8px 0;">📋</p><p style="font-weight:700; font-size:14px; margin:0;">Checklist</p><p style="font-size:11px; color:#64748B; margin:0;">Karnataka rules</p></div>
+                <div class="f-card"><p style="font-size: 20px; margin:0 0 8px 0;">👥</p><p style="font-weight:700; font-size:14px; margin:0;">Community</p><p style="font-size:11px; color:#64748B; margin:0;">Tenant stories</p></div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        # Analysis Workspace
+        st.markdown("<h3 style='font-size: 20px; font-weight: 800; margin-bottom: 24px;'>✨ Analyze a Rental Listing</h3>", unsafe_allow_html=True)
+
+        with st.container():
+            tabs = st.tabs(["📄 Listing Details", "💬 Landlord Chat", "🏢 Property Details"])
+            with tabs[0]:
+                listing = st.text_area("Description", height=180, placeholder="Paste NoBroker/WhatsApp text here...", label_visibility="collapsed")
+            with tabs[1]:
+                chat = st.text_area("Chat", height=180, placeholder="Paste snippets from broker chat...", label_visibility="collapsed")
+            with tabs[2]:
+                locality = st.text_input("Locality Hint", placeholder="e.g. HSR Layout")
+
+            col_btn, col_info = st.columns([1, 1.5])
+            with col_btn:
+                if st.button("🚀 Analyze with AI", use_container_width=True):
+                    if listing.strip():
+                        report = generate_rental_safety_report(listing, chat or None, locality_hint=locality or None)
+                        st.session_state.report = report
+                        st.toast("Analysis complete!")
+                    else:
+                        st.error("Paste a listing first.")
+            with col_info:
+                st.markdown("<p style='font-size: 12px; color: #64748B; margin-top: 14px;'>🛡️ Deterministic analysis using rule-based compliance engine.</p>", unsafe_allow_html=True)
+
+        if "report" in st.session_state:
+            rep = st.session_state.report
+            st.markdown(f"#### Safety Report: {rep.risk_category.value.upper()}")
+            st.info(rep.risk_reasoning)
+            for f in rep.findings:
+                with st.expander(f"🚩 {f.rule_id}"):
+                    st.write(f.explanation)
+                    st.caption(f"Evidence: {f.evidence_excerpt}")
+
+    else:
+        st.markdown(f"## {st.session_state.page}")
+        st.info("Feature view coming soon...")
+
+with right_c:
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    # AI Assistant
+    st.markdown(
+        """
+        <div style="background: white; border: 1px solid #E2E8F0; border-radius: 24px; padding: 24px; margin-bottom: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 20px;">🤖</span>
+                    <span style="font-weight: 800; font-size: 14px;">Ask RentRakshak</span>
+                </div>
+                <span style="font-size: 10px; font-weight: 700; background: #F0FDF4; color: #166534; padding: 4px 8px; border-radius: 6px;">AI ASSISTANT</span>
+            </div>
+            <div style="background: #F8FAFC; border-radius: 12px; padding: 14px; margin-bottom: 16px;">
+                <p style="font-size: 12px; color: #1E293B; line-height: 1.5; margin:0;">
+                    Hi! I'm RentRakshak 👋 Ask me anything about rentals in Bengaluru — red flags, rent estimates, or legal rights.
+                </p>
+            </div>
+            <div style="position: relative;">
+                <input type="text" placeholder="Ask a question..." style="width:100%; padding: 10px 40px 10px 14px; border-radius: 10px; border: 1px solid #E2E8F0; font-size: 12px;">
+                <div style="position: absolute; right: 8px; top: 6px; background: #5E17EB; width: 24px; height: 24px; border-radius: 6px; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px;">→</div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # Experiences
+    st.markdown(
+        """
+        <div style="background: white; border: 1px solid #E2E8F0; border-radius: 24px; padding: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <span style="font-weight: 800; font-size: 14px;">Recent Stories</span>
+                <span style="font-size: 11px; color: #5E17EB; font-weight: 700; cursor: pointer;">View all</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="border-left: 2px solid #10B981; padding-left: 12px;">
+                    <p style="margin:0; font-size: 10px; font-weight: 700; color: #10B981;">POSITIVE · Koramangala</p>
+                    <p style="margin:4px 0; font-size: 12px; font-weight: 700; color: #1A1A1A;">Smooth deposit refund</p>
+                    <p style="margin:0; font-size: 10px; color: #64748B;">2 days ago</p>
+                </div>
+                <div style="border-left: 2px solid #EF4444; padding-left: 12px;">
+                    <p style="margin:0; font-size: 10px; font-weight: 700; color: #EF4444;">NEGATIVE · HSR Layout</p>
+                    <p style="margin:4px 0; font-size: 12px; font-weight: 700; color: #1A1A1A;">Unnecessary deductions</p>
+                    <p style="margin:0; font-size: 10px; color: #64748B;">4 days ago</p>
+                </div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
     )
