@@ -17,6 +17,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0"]
+ollama = ["google-adk[extensions]>=1.39.0"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

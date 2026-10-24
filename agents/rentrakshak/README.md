@@ -254,9 +254,20 @@ Detailed walkthrough: **[USAGE_GUIDE.md](USAGE_GUIDE.md)** · Manual QA: **[FEAT
 
 ## Model setup
 
-- **Gemini (default orchestration):** `GOOGLE_API_KEY` in `.env`  
+| Mode | When to use | Setup |
+|------|-------------|--------|
+| **Deterministic only** | Judges, CI, Docker `test` | No model; `main.py` / tools |
+| **Gemini (cloud)** | Hosted ADK chat | `GOOGLE_API_KEY` + `RENTRAKSHAK_MODEL` |
+| **Gemma local (Ollama)** | Your Mac, no API key | `pip install -r requirements-ollama.txt`, `RENTRAKSHAK_LLM_BACKEND=ollama`, `RENTRAKSHAK_OLLAMA_MODEL=gemma3:4b` |
+| **Auto** | Prefer Gemini if key exists, else Ollama | `RENTRAKSHAK_USE_OLLAMA=true` |
+
+```bash
+python scripts/check_ollama.py   # verify gemma3:4b is pulled
+adk web adk_agent
+```
+
 - **Gemma on Vertex (optional):** see `.env.example`  
-- **Fully offline:** pytest, `main.py`, Streamlit analyze tab, community/vacating via SQLite  
+- **Fully offline:** pytest, `main.py`, Docker — no LLM required  
 
 ---
 

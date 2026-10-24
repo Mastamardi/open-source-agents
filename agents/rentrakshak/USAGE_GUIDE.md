@@ -60,7 +60,28 @@ Open the URL shown (usually http://localhost:8501).
 | Vacating / rooms | Search Whitefield for seeded room |
 | Karnataka checklist | Scroll sources — not legal advice |
 
-## 5. Google ADK agent (needs `GOOGLE_API_KEY`)
+## 5. Local Gemma via Ollama (no Google API key)
+
+You already have `gemma3:1b` and `gemma3:4b` in Ollama. Use **4b** for better tool calling.
+
+```bash
+pip install -r requirements-ollama.txt
+python scripts/check_ollama.py          # must pass
+
+export RENTRAKSHAK_LLM_BACKEND=ollama
+export RENTRAKSHAK_OLLAMA_MODEL=gemma3:4b
+# optional smaller/faster: gemma3:1b
+
+adk run adk_agent
+# or
+adk web adk_agent
+```
+
+**Auto mode:** set `RENTRAKSHAK_USE_OLLAMA=true` and leave `GOOGLE_API_KEY` unset — agent picks Ollama.
+
+Deterministic tools (`main.py`, `pytest`) still work without Ollama.
+
+## 6. Google ADK agent with Gemini (needs `GOOGLE_API_KEY`)
 
 From `agents/rentrakshak`:
 
@@ -79,22 +100,22 @@ Example prompts:
 
 The agent must call tools for rents, risks, and legal references — it should not invent figures.
 
-## 6. Reset demo database
+## 7. Reset demo database
 
 ```bash
 rm -f data/rentrakshak.db
 python scripts/seed_demo_data.py
 ```
 
-## 7. Optional: Gemma / Vertex
+## 8. Optional: Gemma on Vertex (cloud)
 
 Set in `.env` (see `.env.example`). Not required for pytest or Streamlit deterministic flows.
 
-## 8. Optional: Model Armor
+## 9. Optional: Model Armor
 
 Set `MODEL_ARMOR_PROJECT_ID` and `MODEL_ARMOR_TEMPLATE_ID`. If unset, local guardrails still run (see `rentrakshak/guardrails/`).
 
-## 9. Pull request / upstream
+## 10. Pull request / upstream
 
 Project path: `agents/rentrakshak/` in [gdgcblr/open-source-agents](https://github.com/gdgcblr/open-source-agents).
 

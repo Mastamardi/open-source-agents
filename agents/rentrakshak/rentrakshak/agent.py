@@ -3,7 +3,7 @@ from __future__ import annotations
 from google.adk.agents import Agent
 from google.adk.tools.function_tool import FunctionTool
 
-from rentrakshak.config import model_name
+from rentrakshak.llm import resolve_agent_model
 from rentrakshak.tools.registry import ALL_TOOL_FUNCTIONS
 
 INSTRUCTION = """
@@ -38,7 +38,7 @@ tools = [FunctionTool(fn) for fn in ALL_TOOL_FUNCTIONS]
 
 root_agent = Agent(
     name="rentrakshak",
-    model=model_name(),
+    model=resolve_agent_model(),
     instruction=INSTRUCTION,
     tools=tools,
 )

@@ -59,6 +59,21 @@ Copy `.env.example` for local non-Docker runs. For Compose, set `environment:` o
 - Working directory: `/app`
 - Default command: `pytest -q`
 
+## Local Gemma (Ollama on host + container)
+
+Ollama usually runs on the **host** (not inside the image). From a container:
+
+```bash
+docker compose run --rm \
+  -e RENTRAKSHAK_LLM_BACKEND=ollama \
+  -e RENTRAKSHAK_OLLAMA_MODEL=gemma3:4b \
+  -e OLLAMA_API_BASE=http://host.docker.internal:11434 \
+  --add-host=host.docker.internal:host-gateway \
+  cli
+```
+
+For interactive ADK with Ollama, install `requirements-ollama.txt` on the host and run `adk web adk_agent` locally (simplest).
+
 ## ADK in Docker (optional)
 
 ```bash
