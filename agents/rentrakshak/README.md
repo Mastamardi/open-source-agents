@@ -136,6 +136,23 @@ These matter for trust and judging—even when they are not the headline demo ta
 | **Demo seed script** | `scripts/seed_demo_data.py` for repeatable judge walkthrough |
 | **FEATURE_VERIFICATION_GUIDE.md** | Full manual QA runbook (Sections A–I) |
 | **Phased build plan** | `plan/01`–`12-placeholder.md` shows intentional architecture |
+| **Docker image** | Reproducible build: `docker compose build` → `test` / `cli` / `seed` (see **[DOCKER.md](DOCKER.md)**) |
+
+---
+
+## Docker (recommended for judges & CI)
+
+No local Python required. Image runs **pytest** and **deterministic safety reports** offline.
+
+```bash
+cd agents/rentrakshak
+docker compose build
+docker compose run --rm test          # 32 tests
+docker compose run --rm cli           # suspicious listing JSON report
+docker compose run --rm seed          # demo SQLite in a named volume
+```
+
+Details: **[DOCKER.md](DOCKER.md)**.
 
 ---
 
@@ -223,9 +240,11 @@ python scripts/seed_demo_data.py
 
 | Goal | Command |
 |------|---------|
-| **Prove safeguards** | `pytest -q` → 32 passed, offline |
-| **No-key demo** | `python main.py --listing @tests/fixtures/suspicious_listing.txt` |
-| **Product UI** | `streamlit run ui/streamlit_app.py` |
+| **Docker smoke (fastest)** | `docker compose build && docker compose run --rm test` |
+| **Docker safety report** | `docker compose run --rm cli` |
+| **Prove safeguards (local)** | `pytest -q` → 32 passed, offline |
+| **No-key demo (local)** | `python main.py --listing @tests/fixtures/suspicious_listing.txt` |
+| **Product UI** | `streamlit run ui/streamlit_app.py` (optional; polish later) |
 | **ADK + Gemini** | `export GOOGLE_API_KEY=... && adk web adk_agent` |
 | **Reset demo DB** | `rm -f data/rentrakshak.db && python scripts/seed_demo_data.py` |
 

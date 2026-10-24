@@ -29,11 +29,21 @@ One-page narrative for evaluators who may not run the code immediately.
 
 ## 3-minute demo script
 
-1. `cd agents/rentrakshak && pytest -q`  
-2. `python main.py --listing @tests/fixtures/suspicious_listing.txt` — point at RF-005 and critical risk.  
-3. `streamlit run ui/streamlit_app.py` — Analyze tab + Community (Koramangala) + Vacating (Whitefield).  
-4. Optional: `adk web adk_agent` with `GOOGLE_API_KEY` — show tool calls.  
-5. Say clearly: rent JSON is **demo-labeled**; community posts are **unverified**; RentRakshak is **not** Google/government.
+**Option A — Docker (cleanest for judges)**
+
+1. `cd agents/rentrakshak && docker compose build`  
+2. `docker compose run --rm test` — 32 passed, no API key  
+3. `docker compose run --rm cli` — critical risk + RF-005 on suspicious fixture  
+4. `docker compose run --rm seed` — optional demo DB  
+
+**Option B — Local Python**
+
+1. `pytest -q`  
+2. `python main.py --listing @tests/fixtures/suspicious_listing.txt`  
+
+Then (optional): `adk web adk_agent` with `GOOGLE_API_KEY`. UI (`streamlit`) is optional and deferred.
+
+Say clearly: rent JSON is **demo-labeled**; community posts are **unverified**; RentRakshak is **not** Google/government.
 
 ## Where to look in code
 

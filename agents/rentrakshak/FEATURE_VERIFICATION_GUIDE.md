@@ -8,10 +8,22 @@ Actionable QA runbook for manual verification before judging.
 
 ### Prerequisites
 
-- Python 3.11+ (tested on 3.12)
-- `git`, `pip`, optional `gh` for PR workflow
+- **Docker path:** Docker 24+ and Docker Compose v2 (no Python required)
+- **Local path:** Python 3.11+ (tested on 3.12), `git`, `pip`
 
-### Environment creation
+### Docker setup (verify first)
+
+```bash
+cd agents/rentrakshak
+docker compose build
+docker compose run --rm test
+docker compose run --rm cli
+docker compose run --rm seed
+```
+
+Expected: `32 passed` from `test`; `cli` prints JSON with `critical_warning` for suspicious fixture. See **DOCKER.md**.
+
+### Environment creation (local)
 
 ```bash
 cd agents/rentrakshak

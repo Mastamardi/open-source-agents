@@ -4,7 +4,19 @@ This guide helps you run the hackathon demo without last-minute surprises.
 
 **Judges:** start with **[JUDGING_OVERVIEW.md](JUDGING_OVERVIEW.md)** and the long-form **[README.md](README.md)** (full feature descriptions). This file is the command cheat sheet.
 
-## 1. One-time setup
+## 0. Docker (no Python on your machine)
+
+```bash
+cd agents/rentrakshak
+docker compose build
+docker compose run --rm test    # expect: 32 passed
+docker compose run --rm cli     # JSON safety report (suspicious fixture)
+docker compose run --rm seed    # demo community DB in Docker volume
+```
+
+Full reference: **[DOCKER.md](DOCKER.md)**.
+
+## 1. One-time setup (local Python)
 
 ```bash
 cd agents/rentrakshak
