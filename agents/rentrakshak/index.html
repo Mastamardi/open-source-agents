@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RentRakshak | Hackathon Presentation</title>
+    <title>RentRakshak | Pitch Presentation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
@@ -13,13 +13,13 @@
 
         :root {
             --primary: #5E17EB;
+            --primary-soft: #F5F1FF;
             --secondary: #065F46;
-            --accent: #FF3D00;
         }
 
         .reveal {
             font-family: 'Plus Jakarta Sans', sans-serif !important;
-            background-color: #F8FAFC;
+            background-color: #FAF7F2;
         }
 
         .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
@@ -27,207 +27,294 @@
             text-transform: none !important;
             font-weight: 800 !important;
             letter-spacing: -0.02em !important;
-        }
-
-        .reveal section img {
-            border: none;
-            box-shadow: none;
-        }
-
-        .purple-gradient {
-            background: linear-gradient(135deg, #5E17EB 0%, #3B0764 100%);
+            color: #1A1A1A;
         }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(94, 23, 235, 0.1);
+            border: 1px solid rgba(94, 23, 235, 0.12);
             border-radius: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
         }
 
-        /* Full Screen Button */
-        #fs-btn {
+        .script-box {
+            background: #F8FAFC;
+            border-left: 5px solid var(--primary);
+            padding: 20px;
+            border-radius: 0 16px 16px 0;
+            text-align: left;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #334155;
+            margin-top: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        /* Controls */
+        .controls-bar {
             position: fixed;
             bottom: 20px;
             right: 20px;
             z-index: 9999;
+            display: flex;
+            gap: 10px;
+        }
+
+        .ctrl-btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 10px 15px;
+            padding: 10px 16px;
             border-radius: 12px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(94, 23, 235, 0.3);
-            font-size: 14px;
+            font-size: 13px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
-        #fs-btn:hover { background: #4C11D0; }
-
-        /* Ensure content stays in screen */
-        .reveal .slides {
-            text-align: center;
-        }
+        .ctrl-btn:hover { background: #4C11D0; }
 
         .reveal .slides section {
-            padding: 20px;
+            padding: 30px;
             box-sizing: border-box;
+            text-align: left;
         }
 
         .team-avatar {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             background: var(--primary-soft);
-            border-radius: 30px;
+            border-radius: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 40px;
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--primary);
             margin: 0 auto 15px;
             border: 2px solid var(--primary);
         }
     </style>
 </head>
 <body>
-    <button id="fs-btn" onclick="toggleFullScreen()">
-        <span>⛶</span> Full Screen
-    </button>
+    <div class="controls-bar">
+        <button class="ctrl-btn" onclick="toggleScript()"><span>📜</span> Toggle Script</button>
+        <button class="ctrl-btn" onclick="toggleFullScreen()"><span>⛶</span> Full Screen</button>
+    </div>
 
     <div class="reveal">
         <div class="slides">
 
-            <!-- SLIDE 1: INTRO -->
+            <!-- HOOK / TITLE SLIDE -->
             <section data-background-color="#F5F1FF">
-                <div class="animate__animated animate__fadeInDown">
-                    <span class="bg-purple-600 text-white px-5 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-6 inline-block">Hackathon 2026</span>
-                </div>
-                <h1 class="animate__animated animate__zoomIn text-6xl md:text-8xl font-black text-gray-900 mb-2">RentRakshak</h1>
-                <p class="animate__animated animate__fadeInUp text-2xl text-purple-600 font-bold mb-10">Protecting Bengaluru's Tenants, One Listing at a Time.</p>
+                <div class="text-center">
+                    <span class="animate__animated animate__fadeInDown bg-purple-600 text-white px-5 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-6 inline-block">Hackathon 2026 Presentation</span>
+                    <h1 class="animate__animated animate__zoomIn text-6xl md:text-7xl font-black text-gray-900 mb-4">RentRakshak</h1>
+                    <p class="animate__animated animate__fadeInUp text-xl text-purple-600 font-bold mb-8">Namma Bengaluru's Rental Safety Guardian</p>
 
-                <div class="animate__animated animate__fadeInUp animate__delay-1s flex flex-wrap justify-center gap-6 mt-12">
-                    <div class="glass-card px-8 py-4 flex items-center gap-3">
-                        <span class="text-2xl">🛡️</span>
-                        <div class="text-left">
-                            <p class="text-xs text-gray-400 font-bold uppercase">Team Members</p>
-                            <p class="text-lg font-bold text-gray-800">Omkar & Rakesh</p>
+                    <div class="script-box animate__animated animate__fadeInUp script-content">
+                        <strong>🎤 Opening Hook:</strong><br>
+                        “Good morning, judges! Many people come to Bengaluru to study, work, and build their careers. But finding a safe house here is not always easy. People may pay huge deposits, get cheated by fake property listings, or lose money when they leave a rented house.<br><br>
+                        So, we built <strong>RentRakshak</strong> — an AI-powered platform that helps people make safer rental decisions before they pay their money.”
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 1: INTRODUCTION -->
+            <section data-background-color="#FFFFFF">
+                <div class="text-center mb-6">
+                    <span class="text-xs font-bold text-purple-600 uppercase tracking-widest bg-purple-50 px-3 py-1 rounded-md">Slide 1</span>
+                    <h2 class="text-4xl font-black mt-2">Introduction</h2>
+                </div>
+
+                <div class="grid grid-cols-2 gap-8 items-center">
+                    <div class="space-y-4">
+                        <div class="fragment animate__animated animate__fadeInLeft glass-card p-6">
+                            <h4 class="font-bold text-lg text-purple-600 mb-1">👋 Meet the Team</h4>
+                            <p class="text-gray-700 text-sm">Omkar & Rakesh presenting RentRakshak.</p>
+                        </div>
+                        <div class="fragment animate__animated animate__fadeInLeft glass-card p-6">
+                            <h4 class="font-bold text-lg text-purple-600 mb-1">🎯 Core Mission</h4>
+                            <p class="text-gray-700 text-sm">Find info, identify scams, understand rents, and learn from other tenants.</p>
                         </div>
                     </div>
+                    <div class="fragment animate__animated animate__zoomIn text-center bg-purple-50 p-8 rounded-3xl border border-purple-100">
+                        <div class="text-5xl mb-4">🛡️</div>
+                        <h3 class="text-2xl font-extrabold text-gray-900">Make renting in Bengaluru safer & easier.</h3>
+                    </div>
+                </div>
+
+                <div class="script-box script-content">
+                    <strong>🎤 Script:</strong><br>
+                    “Hello everyone, I’m Omkar, and this is my teammate Rakesh. Today, we are presenting our project, RentRakshak.<br><br>
+                    RentRakshak helps people find rental information, identify possible scams, understand rent prices, and learn from other tenants’ experiences.<br><br>
+                    Our goal is simple: make renting in Bengaluru safer and easier.”
                 </div>
             </section>
 
             <!-- SLIDE 2: THE PROBLEM -->
             <section data-background-color="#0F172A">
-                <h2 class="text-white animate__animated animate__fadeInLeft mb-4">The <span class="text-red-500 underline underline-offset-8">Chaos</span> of Renting</h2>
-                <p class="text-gray-400 mb-12">Bengaluru is a tech hub, but its rental market is in the stone age.</p>
+                <div class="text-center mb-6">
+                    <span class="text-xs font-bold text-red-400 uppercase tracking-widest bg-red-950/50 px-3 py-1 rounded-md">Slide 2</span>
+                    <h2 class="text-4xl font-black text-white mt-2">The Problem in Bengaluru</h2>
+                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="fragment animate__animated animate__fadeInUp bg-white/5 p-8 rounded-3xl border border-white/10 text-left">
-                        <p class="text-4xl mb-4">💸</p>
-                        <h4 class="text-white text-xl mb-2">10-Month Norm</h4>
-                        <p class="text-gray-400 text-sm">Excessive deposits with zero transparency on refunds.</p>
+                <div class="grid grid-cols-3 gap-6">
+                    <div class="fragment animate__animated animate__fadeInUp bg-white/5 p-6 rounded-2xl border border-white/10">
+                        <div class="text-3xl mb-3">💸</div>
+                        <h4 class="text-white font-bold text-lg mb-2">High Deposits</h4>
+                        <p class="text-gray-400 text-xs leading-relaxed">Several months of rent requested upfront as a major financial burden.</p>
                     </div>
-                    <div class="fragment animate__animated animate__fadeInUp bg-white/5 p-8 rounded-3xl border border-white/10 text-left">
-                        <p class="text-4xl mb-4">🕵️</p>
-                        <h4 class="text-white text-xl mb-2">Portal Scams</h4>
-                        <p class="text-gray-400 text-sm">Fake listings on MagicBricks & 99acres stealing token money.</p>
+                    <div class="fragment animate__animated animate__fadeInUp bg-white/5 p-6 rounded-2xl border border-white/10">
+                        <div class="text-3xl mb-3">🚨</div>
+                        <h4 class="text-white font-bold text-lg mb-2">Rental Scams</h4>
+                        <p class="text-gray-400 text-xs leading-relaxed">Fake house listings asking for advance money before property visits.</p>
                     </div>
-                    <div class="fragment animate__animated animate__fadeInUp bg-white/5 p-8 rounded-3xl border border-white/10 text-left">
-                        <p class="text-4xl mb-4">🤐</p>
-                        <h4 class="text-white text-xl mb-2">No Social Proof</h4>
-                        <p class="text-gray-400 text-sm">Landlords hold all the cards. Tenants have no voice.</p>
+                    <div class="fragment animate__animated animate__fadeInUp bg-white/5 p-6 rounded-2xl border border-white/10">
+                        <div class="text-3xl mb-3">❓</div>
+                        <h4 class="text-white font-bold text-lg mb-2">Lack of Info</h4>
+                        <p class="text-gray-400 text-xs leading-relaxed">Zero transparency on landlord deposit return habits or hidden charges.</p>
                     </div>
+                </div>
+
+                <div class="script-box script-content">
+                    <strong>🎤 Script:</strong><br>
+                    “There are three major problems people face when renting a house in Bengaluru.<br><br>
+                    First, high deposits. Some landlords ask tenants to pay several months of rent as a deposit. This can be a big financial burden.<br><br>
+                    Second, rental scams. Some people post fake house listings and ask for advance money before showing the property.<br><br>
+                    Third, lack of information. Before renting, we often don’t know whether the landlord returns the deposit properly, maintains the property, or has hidden charges.<br><br>
+                    These problems can cost tenants both money and peace of mind. That’s why we created RentRakshak.”
                 </div>
             </section>
 
             <!-- SLIDE 3: OUR SOLUTION -->
             <section data-background-color="#FAF7F2">
-                <h2 class="animate__animated animate__fadeInDown mb-12 text-gray-900">Our <span class="text-purple-600">Shield</span></h2>
+                <div class="text-center mb-6">
+                    <span class="text-xs font-bold text-purple-600 uppercase tracking-widest bg-purple-50 px-3 py-1 rounded-md">Slide 3</span>
+                    <h2 class="text-4xl font-black mt-2">Our Solution</h2>
+                </div>
 
-                <div class="space-y-6 max-w-4xl mx-auto">
-                    <div class="fragment animate__animated animate__fadeInRight glass-card p-6 flex items-center gap-6 text-left">
-                        <div class="bg-purple-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center text-3xl">✨</div>
-                        <div>
-                            <h4 class="text-xl font-bold">Deterministic Risk Engine</h4>
-                            <p class="text-gray-500 text-sm">Rule-based compliance checking that spots red flags in seconds without requiring LLM API keys.</p>
-                        </div>
+                <div class="grid grid-cols-3 gap-6">
+                    <div class="fragment animate__animated animate__flipInX glass-card p-6">
+                        <div class="text-3xl mb-3">🔍</div>
+                        <h4 class="font-bold text-lg mb-2">Listing Analysis</h4>
+                        <p class="text-gray-600 text-xs">Paste ads to check for suspicious details and unusual deposits.</p>
                     </div>
+                    <div class="fragment animate__animated animate__flipInX glass-card p-6">
+                        <div class="text-3xl mb-3">📊</div>
+                        <h4 class="font-bold text-lg mb-2">Rent Comparison</h4>
+                        <p class="text-gray-600 text-xs">Compare requested rent with neighborhood benchmarks.</p>
+                    </div>
+                    <div class="fragment animate__animated animate__flipInX glass-card p-6">
+                        <div class="text-3xl mb-3">👥</div>
+                        <h4 class="font-bold text-lg mb-2">Tenant Community</h4>
+                        <p class="text-gray-600 text-xs">Share and read anonymous rental experiences safely.</p>
+                    </div>
+                </div>
 
-                    <div class="fragment animate__animated animate__fadeInLeft glass-card p-6 flex items-center gap-6 text-left">
-                        <div class="bg-green-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center text-3xl">📍</div>
-                        <div>
-                            <h4 class="text-xl font-bold">Neighborhood Benchmarks</h4>
-                            <p class="text-gray-500 text-sm">Live rent estimation based on actual Bengaluru neighborhood data (Koramangala, HSR, etc).</p>
-                        </div>
-                    </div>
-
-                    <div class="fragment animate__animated animate__fadeInRight glass-card p-6 flex items-center gap-6 text-left">
-                        <div class="bg-blue-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center text-3xl">🗣️</div>
-                        <div>
-                            <h4 class="text-xl font-bold">Anonymous Social Layer</h4>
-                            <p class="text-gray-500 text-sm">A safe space for tenants to share move-out experiences and warn the next resident.</p>
-                        </div>
-                    </div>
+                <div class="script-box script-content">
+                    <strong>🎤 Script:</strong><br>
+                    “RentRakshak helps tenants in three main ways.<br><br>
+                    First, listing analysis. Users can paste a rental advertisement, and our system checks for suspicious details, unusual deposits, and other warning signs.<br><br>
+                    Second, rent comparison. Users can compare the requested rent with available neighborhood benchmarks to understand whether the price seems reasonable.<br><br>
+                    Third, anonymous tenant community. Tenants can share their rental experiences without publicly revealing their identity, helping other people make better decisions.<br><br>
+                    In simple words, RentRakshak helps people check before they trust and pay.”
                 </div>
             </section>
 
-            <!-- SLIDE 4: THE TECH -->
+            <!-- SLIDE 4: TECHNOLOGY STACK -->
             <section data-background-color="#5E17EB">
-                <h2 class="text-white mb-16">Modern Tech Stack</h2>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-                    <div class="fragment animate__animated animate__zoomIn bg-white/10 p-6 rounded-3xl backdrop-blur-md border border-white/20">
-                        <p class="text-4xl mb-3">🐍</p>
-                        <p class="text-white font-bold">Python Core</p>
+                <div class="text-center mb-6">
+                    <span class="text-xs font-bold text-purple-200 uppercase tracking-widest bg-purple-700/50 px-3 py-1 rounded-md">Slide 4</span>
+                    <h2 class="text-4xl font-black text-white mt-2">Technology Stack</h2>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                    <div class="fragment animate__animated animate__zoomIn bg-white/10 p-5 rounded-2xl text-white">
+                        <div class="text-3xl mb-2">🐍</div>
+                        <h4 class="font-bold">Python</h4>
+                        <p class="text-xs text-purple-200 mt-1">Logic & safety checks</p>
                     </div>
-                    <div class="fragment animate__animated animate__zoomIn bg-white/10 p-6 rounded-3xl backdrop-blur-md border border-white/20">
-                        <p class="text-4xl mb-3">📊</p>
-                        <p class="text-white font-bold">Streamlit UI</p>
+                    <div class="fragment animate__animated animate__zoomIn bg-white/10 p-5 rounded-2xl text-white">
+                        <div class="text-3xl mb-2">🤖</div>
+                        <h4 class="font-bold">Google ADK</h4>
+                        <p class="text-xs text-purple-200 mt-1">AI agent assistance</p>
                     </div>
-                    <div class="fragment animate__animated animate__zoomIn bg-white/10 p-6 rounded-3xl backdrop-blur-md border border-white/20">
-                        <p class="text-4xl mb-3">🤖</p>
-                        <p class="text-white font-bold">Google ADK</p>
+                    <div class="fragment animate__animated animate__zoomIn bg-white/10 p-5 rounded-2xl text-white">
+                        <div class="text-3xl mb-2">📊</div>
+                        <h4 class="font-bold">Streamlit</h4>
+                        <p class="text-xs text-purple-200 mt-1">Interactive UI</p>
                     </div>
-                    <div class="fragment animate__animated animate__zoomIn bg-white/10 p-6 rounded-3xl backdrop-blur-md border border-white/20">
-                        <p class="text-4xl mb-3">🗄️</p>
-                        <p class="text-white font-bold">SQLite DB</p>
+                    <div class="fragment animate__animated animate__zoomIn bg-white/10 p-5 rounded-2xl text-white">
+                        <div class="text-3xl mb-2">🗄️</div>
+                        <h4 class="font-bold">SQLite</h4>
+                        <p class="text-xs text-purple-200 mt-1">Database storage</p>
                     </div>
                 </div>
-                <p class="text-purple-200 mt-16 text-sm fragment">Fully local analysis • Privacy-first • Blazing fast</p>
+
+                <div class="script-box script-content">
+                    <strong>🎤 Script:</strong><br>
+                    “We used different technologies to build RentRakshak.<br>
+                    - Python handles the main logic and checks rental information.<br>
+                    - Google ADK helps us build an AI agent that can understand and respond to rental-related questions.<br>
+                    - Streamlit helps us create the user interface — the screens people interact with.<br>
+                    - SQLite helps us store information in a database.<br>
+                    We combine predefined rules with AI. Rules help us check specific conditions consistently, while AI helps us understand more complex questions.<br><br>
+                    This makes our platform useful for both quick checks and interactive assistance.”
+                </div>
             </section>
 
             <!-- SLIDE 5: THE TEAM -->
             <section data-background-color="#FFFFFF">
-                <h2 class="mb-16">The Creators</h2>
-                <div class="flex justify-center gap-16">
-                    <div class="fragment animate__animated animate__bounceIn">
-                        <div class="team-avatar bg-purple-50 text-purple-600">O</div>
-                        <h4 class="text-2xl font-black">Omkar</h4>
-                        <p class="text-gray-400 text-sm">Lead Developer</p>
+                <div class="text-center mb-6">
+                    <span class="text-xs font-bold text-purple-600 uppercase tracking-widest bg-purple-50 px-3 py-1 rounded-md">Slide 5</span>
+                    <h2 class="text-4xl font-black mt-2">The Team</h2>
+                </div>
+
+                <div class="flex justify-center gap-12 my-8">
+                    <div class="fragment animate__animated animate__bounceIn text-center">
+                        <div class="team-avatar">O</div>
+                        <h4 class="text-xl font-bold">Omkar</h4>
+                        <p class="text-gray-500 text-xs">Technical Implementation</p>
                     </div>
-                    <div class="fragment animate__animated animate__bounceIn animate__delay-1s">
-                        <div class="team-avatar bg-indigo-50 text-indigo-600">R</div>
-                        <h4 class="text-2xl font-black">Rakesh</h4>
-                        <p class="text-gray-400 text-sm">Product Architect</p>
+                    <div class="fragment animate__animated animate__bounceIn animate__delay-1s text-center">
+                        <div class="team-avatar" style="background: #ECFDF5; color: #065F46; border-color: #065F46;">R</div>
+                        <h4 class="text-xl font-bold">Rakesh</h4>
+                        <p class="text-gray-500 text-xs">Product Design & Planning</p>
                     </div>
                 </div>
-                <div class="mt-20 px-8 py-4 bg-gray-50 rounded-2xl inline-block fragment">
-                    <p class="text-gray-600 font-bold">Built with ❤️ for Bengaluru</p>
+
+                <div class="script-box script-content">
+                    <strong>🎤 Script:</strong><br>
+                    “This project was developed by our team, Omkar and Rakesh.<br><br>
+                    I worked mainly on the development and technical implementation, while Rakesh contributed to the product design and planning.<br><br>
+                    We focused on a real problem faced by people moving to Bengaluru and built a solution that can help tenants make more informed decisions.”
                 </div>
             </section>
 
-            <!-- SLIDE 6: THANK YOU -->
+            <!-- SLIDE 6: VISION AND CLOSING -->
             <section data-background-color="#065F46">
-                <div class="animate__animated animate__heartBeat animate__infinite mb-12">
-                    <span class="text-8xl">🛡️</span>
+                <div class="text-center mb-6">
+                    <span class="text-xs font-bold text-green-200 uppercase tracking-widest bg-green-900/50 px-3 py-1 rounded-md">Slide 6</span>
+                    <h2 class="text-4xl font-black text-white mt-2">Vision & Closing</h2>
                 </div>
-                <h1 class="text-white mb-4">RentRakshak</h1>
-                <p class="text-green-200 text-xl mb-12">Secure. Transparent. Community-Driven.</p>
-                <h2 class="text-white text-5xl">Thank You!</h2>
-                <div class="mt-12 text-green-300/50 text-sm">
-                    Questions? Ask Omkar or Rakesh
+
+                <div class="fragment animate__animated animate__fadeInUp bg-white/10 p-8 rounded-3xl border border-white/20 backdrop-blur-md max-w-2xl mx-auto text-center">
+                    <p class="text-green-100 text-xl font-medium leading-relaxed">
+                        “Our vision is to make renting safer, more transparent, and less stressful for everyone in Bengaluru.”
+                    </p>
+                </div>
+
+                <div class="script-box script-content">
+                    <strong>🎤 Script:</strong><br>
+                    “Our vision is to make renting safer, more transparent, and less stressful.<br><br>
+                    We want people to focus on finding a good home instead of worrying about fake listings, unfair deposits, and hidden problems.<br><br>
+                    We believe RentRakshak can become a trusted rental safety companion for tenants, starting with Bengaluru.<br><br>
+                    Thank you! We would be happy to show you a live demo and answer your questions.”
                 </div>
             </section>
 
@@ -244,20 +331,33 @@
             controls: true,
             progress: true,
             touch: true,
-            responsive: true,
             width: 1200,
-            height: 800,
-            margin: 0.1
+            height: 900,
+            margin: 0.05
+        });
+
+        // Script box toggle state
+        let scriptVisible = false;
+        function toggleScript() {
+            scriptVisible = !scriptVisible;
+            const boxes = document.querySelectorAll('.script-content');
+            boxes.forEach(box => {
+                box.style.display = scriptVisible ? 'block' : 'none';
+            });
+        }
+
+        // Hide scripts by default on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const boxes = document.querySelectorAll('.script-content');
+            boxes.forEach(box => { box.style.display = 'none'; });
         });
 
         function toggleFullScreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen();
-                document.getElementById('fs-btn').innerHTML = '<span>❌</span> Exit Full Screen';
             } else {
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
-                    document.getElementById('fs-btn').innerHTML = '<span>⛶</span> Full Screen';
                 }
             }
         }
