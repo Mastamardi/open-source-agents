@@ -1,0 +1,19 @@
+{
+  "dataset_version": "2026-03-demo-1",
+  "disclaimer": "Mix of illustrative samples and fictional observed listings for hackathon demo. Not live market data.",
+  "observations": [
+    {"locality": "Whitefield", "bhk": "1 BHK", "property_type": "apartment", "furnishing": "semi-furnished", "monthly_rent_inr": 22000, "source_reference": "illustrative_sample", "source_url": null, "date_collected": "2025-11-01", "data_classification": "illustrative_sample"},
+    {"locality": "Whitefield", "bhk": "2 BHK", "property_type": "apartment", "furnishing": "furnished", "monthly_rent_inr": 32000, "source_reference": "illustrative_sample", "source_url": null, "date_collected": "2025-11-01", "data_classification": "illustrative_sample"},
+    {"locality": "Whitefield", "bhk": "2 BHK", "property_type": "apartment", "furnishing": "semi-furnished", "monthly_rent_inr": 28000, "source_reference": "demo_observed_listing", "source_url": "https://example.com/demo-listing-wf-2bhk", "date_collected": "2026-01-15", "data_classification": "observed_listing"},
+    {"locality": "Marathahalli", "bhk": "1 BHK", "property_type": "apartment", "furnishing": "unfurnished", "monthly_rent_inr": 18000, "source_reference": "illustrative_sample", "source_url": null, "date_collected": "2025-10-20", "data_classification": "illustrative_sample"},
+    {"locality": "Marathahalli", "bhk": "2 BHK", "property_type": "apartment", "furnishing": "furnished", "monthly_rent_inr": 30000, "source_reference": "illustrative_sample", "source_url": null, "date_collected": "2025-10-20", "data_classification": "illustrative_sample"},
+    {"locality": "Bellandur", "bhk": "2 BHK", "property_type": "apartment", "furnishing": "semi-furnished", "monthly_rent_inr": 35000, "source_reference": "illustrative_sample", "source_url": null, "date_collected": "2025-12-01", "data_classification": "illustrative_sample"},
+    {"locality": "Electronic City", "bhk": "1 BHK", "property_type": "apartment", "furnishing": "semi-furnished", "monthly_rent_inr": 16000, "source_reference": "illustrative_sample", "source_url": null, "date_collected": "2025-09-01", "data_classification": "illustrative_sample"},
+    {"locality": "Electronic City", "bhk": "2 BHK", "property_type": "apartment", "furnishing": "unfurnished", "monthly_rent_inr": 24000, "source_reference": "illustrative_sample", "source_url": null, "date_collected": "2025-09-01", "data_classification": "illustrative_sample"},
+    {"locality": "Koramangala", "bhk": "1 BHK", "property_type": "apartment", "furnishing": "furnished", "monthly_rent_inr": 28000, "source_reference": "illustrative_sample", "source_url": null, "date_collected": "2025-11-15", "data_classification": "illustrative_sample"},
+    {"locality": "Koramangala", "bhk": "2 BHK", "property_type": "apartment", "furnishing": "semi-furnished", "monthly_rent_inr": 42000, "source_reference": "demo_observed_listing", "source_url": "https://example.com/demo-listing-kora", "date_collected": "2026-02-01", "data_classification": "observed_listing"},
+    {"locality": "HSR Layout", "bhk": "2 BHK", "property_type": "apartment", "furnishing": "furnished", "monthly_rent_inr": 38000, "source_reference": "illustrative_sample", "source_url": null, "date_collected": "2025-10-01", "data_classification": "illustrative_sample"},
+    {"locality": "Indiranagar", "bhk": "2 BHK", "property_type": "apartment", "furnishing": "semi-furnished", "monthly_rent_inr": 45000, "source_reference": "illustrative_sample", "source_url": null, "date_collected": "2025-10-01", "data_classification": "illustrative_sample"},
+    {"locality": "Hebbal", "bhk": "2 BHK", "property_type": "apartment", "furnishing": "unfurnished", "monthly_rent_inr": 26000, "source_reference": "illustrative_sample", "source_url": null, "date_collected": "2025-08-01", "data_classification": "illustrative_sample"}
+  ]
+}

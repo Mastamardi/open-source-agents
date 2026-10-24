@@ -46,4 +46,4 @@ agents/<project-slug>/
 
 | Agent Directory | Description | Framework / Stack | Contributor |
 | :--- | :--- | :--- | :--- |
-| *(None yet)* | *Contributions will appear here once approved and merged.* | — | — |
+| [`rentrakshak`](rentrakshak/) | Bengaluru rental safety agent, anonymous tenant community, vacating board (Google ADK) | Google ADK, Gemini, Streamlit, SQLite | Community |
